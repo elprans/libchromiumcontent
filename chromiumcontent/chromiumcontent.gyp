@@ -24,11 +24,11 @@
     },
     {
       'target_name': 'chromiumcontent',
-      # Build chromiumcontent as shared_library otherwise some static libraries
-      # will not build.
-      'type': 'shared_library',
+      'type': 'static_library',
       'dependencies': [
         '<(DEPTH)/components/prefs/prefs.gyp:prefs',
+        '<(DEPTH)/chrome/chrome_resources.gyp:packed_extra_resources',
+        '<(DEPTH)/chrome/chrome_resources.gyp:packed_resources',
         '<(DEPTH)/components/components.gyp:cdm_renderer',
         '<(DEPTH)/components/components.gyp:devtools_discovery',
         '<(DEPTH)/components/components.gyp:devtools_http_handler',
