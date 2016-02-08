@@ -1,17 +1,5 @@
 {
   'variables': {
-    # Enalbe using proprietary codecs.
-    'proprietary_codecs': 1,
-    'ffmpeg_branding': 'Chrome',
-    # Enable support for Widevine CDM.
-    'enable_widevine': 1,
-    # Using libc++ requires building for >= 10.7.
-    'mac_deployment_target': '10.8',
-    # The 10.8 SDK does not work well with C++11.
-    'mac_sdk_min': '10.9',
-    # Use the standard way of linking with msvc runtime.
-    'win_use_allocator_shim': 0,
-    'win_release_RuntimeLibrary': '2',
     # The V8 libraries.
     'v8_libraries': '["v8", "v8_snapshot", "v8_nosnapshot", "v8_external_snapshot", "v8_base", "v8_libbase", "v8_libplatform"]',
     # The icu libraries.
@@ -22,20 +10,6 @@
         'v8_use_external_startup_data': 1,
       }],
       ['OS=="linux"', {
-        # Enable high DPI support on Linux.
-        'enable_hidpi': 1,
-        # Use Dbus.
-        'use_dbus': 1,
-        # Make Linux build contain debug symbols, this flag will add '-g' to
-        # cflags.
-        'linux_dump_symbols': 1,
-        # The Linux build of libchromiumcontent.so depends on, but doesn't
-        # provide, tcmalloc by default.  Disabling tcmalloc here also prevents
-        # any conflicts when linking to binaries or libraries that don't use
-        # tcmalloc.
-        'linux_use_tcmalloc': 0,
-        # Force using gold linker.
-        'linux_use_bundled_gold': 1,
         'conditions': [
           ['target_arch=="arm"', {
             'arm_version': 7,
