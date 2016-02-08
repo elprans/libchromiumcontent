@@ -24,11 +24,11 @@
     },
     {
       'target_name': 'chromiumcontent',
-      # Build chromiumcontent as shared_library otherwise some static libraries
-      # will not build.
-      'type': 'shared_library',
+      'type': 'static_library',
       'dependencies': [
         '<(DEPTH)/components/prefs/prefs.gyp:prefs',
+        '<(DEPTH)/chrome/chrome_resources.gyp:packed_extra_resources',
+        '<(DEPTH)/chrome/chrome_resources.gyp:packed_resources',
         '<(DEPTH)/components/components.gyp:cdm_renderer',
         '<(DEPTH)/components/components.gyp:devtools_discovery',
         '<(DEPTH)/components/components.gyp:devtools_http_handler',
@@ -41,6 +41,7 @@
         '<(DEPTH)/ppapi/ppapi_internal.gyp:ppapi_proxy',
         '<(DEPTH)/ppapi/ppapi_internal.gyp:ppapi_ipc',
         '<(DEPTH)/ppapi/ppapi_internal.gyp:ppapi_shared',
+        '<(DEPTH)/third_party/WebKit/Source/config.gyp:config',
         '<(DEPTH)/third_party/webrtc/modules/modules.gyp:desktop_capture',
         '<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevinecdmadapter',
         '<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',

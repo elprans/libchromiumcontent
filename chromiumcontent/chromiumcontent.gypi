@@ -1,17 +1,5 @@
 {
   'variables': {
-    # Don't use nacl.
-    'disable_nacl': 1,
-    # Enable using proprietary codecs.
-    'proprietary_codecs': 1,
-    # Build ffmpeg as shared library.
-    'ffmpeg_component': 'shared_library',
-    # Enable support for Widevine CDM.
-    'enable_widevine': 1,
-    # Using libc++ requires building for >= 10.7.
-    'mac_deployment_target': '10.8',
-    # Use the standard way of linking with msvc runtime.
-    'win_use_allocator_shim': 0,
     # The V8 libraries.
     'v8_libraries': '["v8", "v8_snapshot", "v8_nosnapshot", "v8_external_snapshot", "v8_base", "v8_libbase", "v8_libplatform"]',
     # The icu libraries.
@@ -22,15 +10,6 @@
         'v8_use_external_startup_data': 1,
       }],
       ['OS=="linux"', {
-        # Enable high DPI support on Linux.
-        'enable_hidpi': 1,
-        # Use Dbus.
-        'use_dbus': 1,
-        # Make Linux build contain debug symbols, this flag will add '-g' to
-        # cflags.
-        'linux_dump_symbols': 1,
-        # Force using gold linker.
-        'linux_use_bundled_gold': 1,
         'conditions': [
           ['target_arch=="arm"', {
             'arm_version': 7,
