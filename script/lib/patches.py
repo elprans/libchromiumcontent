@@ -86,6 +86,10 @@ class PatchesConfig:
       return None
 
     repo_path = config_contents['repo']
+    if repo_path == 'src':
+      repo_path = ''
+    elif repo_path.startswith('src/'):
+      repo_path = repo_path[4:]
     if sys.platform == 'win32':
       repo_path = repo_path.replace('/', '\\')
 

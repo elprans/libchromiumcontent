@@ -44,4 +44,4 @@ def set_mips64el_env(env):
 
 
 def get_output_dir(source_root, target_arch, component):
-  return os.path.join(source_root, 'src', 'out-' + target_arch, component)
+  return os.environ.get('CHROMIUM_BUILD_DIR')

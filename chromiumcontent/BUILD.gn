@@ -223,6 +223,7 @@ if (is_electron_build && !is_component_build) {
     script = "build_libs.py"
     args = [ "-o", rebase_path("$target_out_dir/objects.gni"),
              "-s", rebase_path(outputs[0]),
+             "-b", rebase_path(root_build_dir),
              "-t", target_cpu ]
 
     deps = [ ":targets" ]
@@ -251,8 +252,8 @@ if (is_electron_build && !is_component_build) {
         ":webkitbindings",
         ":webkitmodules",
         ":webrtc",
-        ":v8",
-        ":v8base",
+        "//v8:v8",
+        "//v8:v8_libplatform",
       ]
       if (use_custom_libcxx) {
         deps += [ ":libc++" ]
@@ -339,21 +340,6 @@ if (is_electron_build && !is_component_build) {
     static_library("webrtc") {
       complete_static_lib = true
       sources = obj_webrtc
-    }
-
-    static_library("v8") {
-      complete_static_lib = true
-      sources = obj_v8
-    }
-
-    split_static_library("v8base") {
-      complete_static_lib = true
-      sources = obj_v8base
-      if (is_win) {
-        split_count = 2
-      } else {
-        split_count = 1
-      }
     }
 
     if (use_custom_libcxx) {

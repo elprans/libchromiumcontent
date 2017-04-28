@@ -15,7 +15,7 @@ def __get_binary_path():
 
 
 def run(directory, target=None, env=None):
-  ninja_binary = __get_binary_path()
+  ninja_binary = '/usr/bin/ninja'
 
   args = [ninja_binary,
           '-C', directory
