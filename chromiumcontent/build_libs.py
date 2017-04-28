@@ -82,7 +82,7 @@ with open(args.out, 'w') as out:
             "third_party/usrsctp",
             "third_party/woff2",
             "third_party/zlib",
-            "tools",
+            "tools/battor_agent",
             "ui",
             "url",
         ])
