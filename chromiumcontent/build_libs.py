@@ -7,6 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-o', dest='out')
 parser.add_argument('-s', dest='stamp')
 parser.add_argument('-t', dest='target_cpu')
+parser.add_argument('-b', dest='root_build_dir')
 args = parser.parse_args()
 
 def gen_list(out, name, obj_dirs):
@@ -89,7 +90,7 @@ with open(args.out, 'w') as out:
             "third_party/usrsctp",
             "third_party/woff2",
             "third_party/zlib",
-            "tools",
+            "tools/battor_agent",
             "ui",
             "url",
         ] + additional_libchromiumcontent)
@@ -289,6 +290,10 @@ with open(args.out, 'w') as out:
         ])
 
 os.environ['CHROMIUMCONTENT_2ND_PASS'] = '1'
-subprocess.check_call(['ninja', 'chromiumcontent:libs'])
+
+cmd = ['ninja', '-v', '-C', args.root_build_dir, 'chromiumcontent:libs']
+print(' '.join(cmd))
+subninja = subprocess.Popen(cmd)
+subninja.wait()
 
 open(args.stamp, 'w')

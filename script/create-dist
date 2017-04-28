@@ -29,7 +29,7 @@ import ninja_syntax
 MAIN_DIR = os.path.join(DIST_DIR, 'main')
 DIST_SRC_DIR = os.path.join(MAIN_DIR, 'src')
 
-NINJA = os.path.join(VENDOR_DIR, 'depot_tools', 'ninja')
+NINJA = '/usr/bin/ninja'
 if sys.platform == 'win32':
   NINJA = '{0}.exe'.format(NINJA)
 
@@ -58,7 +58,6 @@ COMPONENTS = ['static_library', 'shared_library']
 BINARIES = {
   'all': [
     'content_shell.pak',
-    'icudtl.dat',
     'natives_blob.bin',
     'snapshot_blob.bin',
     os.path.join('gen', 'blink', 'public', 'resources', 'blink_image_resources_200_percent.pak'),
@@ -72,7 +71,6 @@ BINARIES = {
     'libffmpeg.dylib',
   ],
   'linux': [
-    'libffmpeg.so',
   ],
   'win32': [
     'd3dcompiler_47.dll',
@@ -349,7 +347,7 @@ def main():
 
   rm_rf(DIST_DIR)
   os.makedirs(MAIN_DIR)
-  
+
   with Ninja(open(os.path.join(MAIN_DIR, 'build.ninja'), 'wb')) as ninja:
     generate_ninja(args, ninja)
 
@@ -377,12 +375,10 @@ def generate_ninja(args, ninja):
   for component in COMPONENTS:
     if args.component == 'all' or args.component == component:
       copy_binaries(target_arch, component, create_debug_archive,
-                    args.keep_debug_symbols, ninja)
+                    args.keep_debug_symbols, ninja, args.system_icu)
       copy_generated_sources(target_arch, component, ninja)
       copy_locales(target_arch, component, ninja)
 
-  copy_ffmpeg(target_arch, ninja)
-  copy_sources(ninja)
   generate_licenses(ninja)
 
 
@@ -405,6 +401,8 @@ def parse_args():
                       help='static_library or shared_library or all')
   parser.add_argument('--no_zip', action='store_true',
                       help='Do not create zip distribution')
+  parser.add_argument('--system-icu', action='store_true', dest='system_icu',
+                      help='Use system icu.')
   return parser.parse_args()
 
 
@@ -437,11 +435,13 @@ def copy_with_blacklist(target_arch, src, dest, ninja):
 
 
 def copy_binaries(target_arch, component, create_debug_archive,
-                  keep_debug_symbols, ninja):
+                  keep_debug_symbols, ninja, system_icu):
   output_dir = get_output_dir(SOURCE_ROOT, target_arch, component)
   target_dir = component
 
   binaries = BINARIES['all'] + BINARIES[TARGET_PLATFORM]
+  if not system_icu:
+    binaries.append('icudtl.dat')
   if component == 'shared_library':
     binaries += BINARIES_SHARED_LIBRARY[TARGET_PLATFORM]
   for binary in binaries:
@@ -539,6 +539,7 @@ def copy_locales(target_arch, component, ninja):
     new_name = re.sub('content_strings_', '', filename)
     ninja.copy(src_file, os.path.join(target_dir, new_name), False)
 
+
 def copy_sources(ninja):
   for include_path in INCLUDE_DIRS:
     copy_headers(include_path, relative_to=SRC_DIR, destination=DIST_SRC_DIR, ninja=ninja)
@@ -562,7 +563,6 @@ def copy_ffmpeg(target_arch, ninja):
 
   target_dir = 'ffmpeg'
   ninja.copy(os.path.join(output_dir, binary), target_dir)
-
 
 
 def copy_headers(relative_path, relative_to, destination, ninja):
@@ -614,6 +614,7 @@ def link_binary_to_debug_file(objcopy, binfile, symfile, dirname, env):
 def run_strip(target_arch, filename, create_debug_archive):
   # Static libraries are not stripped because it would remove
   # all the symbols in it.
+  return
   if filename.endswith('.a'):
     return
 
