@@ -3,3 +3,4 @@ is_electron_build = true
 is_component_build = false
 is_debug = false
 v8_use_snapshot = true
+v8_enable_i18n_support = false

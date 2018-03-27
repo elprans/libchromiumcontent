@@ -214,7 +214,7 @@ def gclient_sync(version, force, git_cache, nohooks):
   gclient = os.path.join(VENDOR_DIR, 'depot_tools', 'gclient.py')
   args = [sys.executable, gclient, 'sync', '--jobs', '16',
           '--revision', 'src@{0}'.format(version), '--with_tags',
-          '--with_branch_heads', '--reset', '--delete_unversioned_trees']
+          '--with_branch_heads', '--reset', '--delete_unversioned_trees', '-v']
   if git_cache:
     args += ['--lock_timeout=15']
   if force:
