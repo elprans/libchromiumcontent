@@ -194,15 +194,3 @@ index 5b1e26e1d0..48f5b30bd2 100644
  
    DumpAndResetStats();
  
-diff --git a/test/cctest/heap/test-spaces.cc b/test/cctest/heap/test-spaces.cc
-index 26b2fdd193..b99913ab80 100644
---- a/test/cctest/heap/test-spaces.cc
-+++ b/test/cctest/heap/test-spaces.cc
-@@ -370,6 +370,7 @@ TEST(NewSpace) {
-   }
- 
-   new_space.TearDown();
-+  memory_allocator->unmapper()->WaitUntilCompleted();
-   memory_allocator->TearDown();
-   delete memory_allocator;
- }
